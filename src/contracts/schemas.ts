@@ -256,3 +256,6 @@ export const LabeledActionSchema = z.object({
 export type LabeledAction = z.infer<typeof LabeledActionSchema>;
 
 export const LabeledActionsSchema = z.array(LabeledActionSchema).length(48);
+
+// Set de generalización: acciones nuevas, no usadas para calibrar (8 seguras, 8 escalar, 8 frenar).
+export const HoldoutActionsSchema = z.array(LabeledActionSchema).length(24);

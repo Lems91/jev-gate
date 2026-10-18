@@ -7,6 +7,8 @@ export const LIVE_LIMITS = {
 
 const HOUR_MS = 60 * 60_000;
 const DAY_MS = 24 * HOUR_MS;
+// Tope de IPs recordadas: evita que la memoria crezca sin límite si alguien rota direcciones.
+const MAX_TRACKED_IPS = 5000;
 
 export type LimitResult = { allowed: true } | { allowed: false; scope: "ip" | "global"; message: string };
 
@@ -30,6 +32,7 @@ export class LiveLimiter {
         message: `Se alcanzó el tope diario de ${this.limits.globalPerDay} evaluaciones en vivo del demo. Las decisiones grabadas siguen disponibles.`,
       };
     }
+    if (this.byIp.size >= MAX_TRACKED_IPS) this.prune(now);
     const recent = (this.byIp.get(ip) ?? []).filter((time) => now - time < HOUR_MS);
     if (recent.length >= this.limits.perIpPerHour) {
       this.byIp.set(ip, recent);
@@ -43,5 +46,12 @@ export class LiveLimiter {
     this.byIp.set(ip, recent);
     this.globalCount += 1;
     return { allowed: true };
+  }
+
+  // Olvida las IP sin evaluaciones en la última hora.
+  private prune(now: number): void {
+    for (const [ip, times] of this.byIp) {
+      if (times.every((time) => now - time >= HOUR_MS)) this.byIp.delete(ip);
+    }
   }
 }

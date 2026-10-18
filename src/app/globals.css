@@ -523,3 +523,8 @@ textarea.input {
   border-left: 4px solid var(--border);
   padding-left: 8px;
 }
+
+.metrics-row-title {
+  font-size: 1rem;
+  margin: 12px 0 6px;
+}

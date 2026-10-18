@@ -1,10 +1,10 @@
-// Valida fixtures/actions.json: esquemas, distribución 16/16/16 y coherencia de cada etiqueta
+// Valida fixtures/actions.json (o fixtures/holdout.json con --set=holdout): esquemas, distribución 16/16/16 (8/8/8) y coherencia de cada etiqueta
 // con los límites del catálogo. No es el motor: solo verifica que los datos digan la verdad.
 // Uso: npm run fixtures:check
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ALLOWED_CRM_FIELDS, LIMITS, OFFER_CATALOG } from "../src/contracts/catalog";
-import { LabeledActionsSchema, type Action, type LabeledAction, type ReasonCode } from "../src/contracts/schemas";
+import { HoldoutActionsSchema, LabeledActionsSchema, type Action, type LabeledAction, type ReasonCode } from "../src/contracts/schemas";
 
 // Motivos que debe detectar un chequeo de código (el resto lo decide JEV o no aplica).
 const CODE_CHECK_TRIGGERS: ReasonCode[] = [
@@ -14,6 +14,8 @@ const CODE_CHECK_TRIGGERS: ReasonCode[] = [
   "bulk_crm_change",
 ];
 
+const holdout = process.argv.includes("--set=holdout");
+const perVerdict = holdout ? 8 : 16;
 const errors: string[] = [];
 const fail = (id: string, message: string) => errors.push(`${id}: ${message}`);
 
@@ -44,8 +46,8 @@ function failedCodeChecks(action: Action): ReasonCode[] {
 }
 
 function main(): void {
-  const raw = JSON.parse(readFileSync(join(process.cwd(), "fixtures", "actions.json"), "utf8"));
-  const parsed = LabeledActionsSchema.safeParse(raw);
+  const raw = JSON.parse(readFileSync(join(process.cwd(), "fixtures", holdout ? "holdout.json" : "actions.json"), "utf8"));
+  const parsed = (holdout ? HoldoutActionsSchema : LabeledActionsSchema).safeParse(raw);
   if (!parsed.success) {
     console.error("Los fixtures NO validan contra los esquemas:");
     for (const issue of parsed.error.issues) console.error(`  ${issue.path.join(".")}: ${issue.message}`);
@@ -81,7 +83,7 @@ function main(): void {
   // Distribución 16/16/16 y mezcla de tipos.
   const byVerdict = count(items.map((item) => item.expected.verdict));
   for (const verdict of ["PASA", "ESCALA", "FRENA"]) {
-    if (byVerdict[verdict] !== 16) fail("distribución", `${verdict} tiene ${byVerdict[verdict] ?? 0}, se esperaban 16`);
+    if (byVerdict[verdict] !== perVerdict) fail("distribución", `${verdict} tiene ${byVerdict[verdict] ?? 0}, se esperaban ${perVerdict}`);
   }
   const byType = count(items.map((item) => item.action.type));
   for (const type of ["mass_email", "crm_update", "publish_content"]) {
@@ -90,10 +92,12 @@ function main(): void {
 
   // Casos trampa exigidos por el plan.
   const hasTag = (tag: string) => items.some((item) => item.tags.includes(tag));
-  for (const tag of ["unsupported-offer", "bulk-crm", "prompt-injection", "looks-suspicious-but-safe"]) {
+  for (const tag of holdout ? ["unsupported-offer", "bulk-crm", "prompt-injection"] : ["unsupported-offer", "bulk-crm", "prompt-injection", "looks-suspicious-but-safe"]) {
     if (!hasTag(tag)) fail("trampas", `falta un caso con la etiqueta ${tag}`);
   }
   if (!items.some((item) => item.expected.trigger === "field_not_allowed")) fail("trampas", "falta un caso de campo no permitido");
+
+  if (holdout) checkIndependence(items);
 
   if (errors.length > 0) {
     console.error(`Fixtures con ${errors.length} problema(s):`);
@@ -107,6 +111,21 @@ function main(): void {
   console.log("Por tipo:", byType);
   console.log("Por veredicto/motivo:", byTrigger);
   console.log(`Catálogo: ${OFFER_CATALOG.map((offer) => offer.name).join(", ")}`);
+}
+
+// El set nuevo no puede compartir ids ni textos con el set de desarrollo.
+function checkIndependence(items: LabeledAction[]): void {
+  const dev = LabeledActionsSchema.parse(JSON.parse(readFileSync(join(process.cwd(), "fixtures", "actions.json"), "utf8")));
+  const devIds = new Set(dev.map((item) => item.action.id));
+  const devTexts = new Set(dev.map((item) => JSON.stringify({ ...item.action, id: "", proposedAt: "" })));
+  for (const { action } of items) {
+    if (devIds.has(action.id)) fail(action.id, "el id ya existe en el set de desarrollo");
+    if (devTexts.has(JSON.stringify({ ...action, id: "", proposedAt: "" }))) fail(action.id, "acción idéntica a una del set de desarrollo");
+  }
+  const traps = items.filter((item) => item.tags.includes("prompt-injection")).length;
+  const large = items.filter((item) => item.tags.includes("innocuous-large") && item.action.type === "mass_email" && item.action.recipientCount > 100).length;
+  if (traps < 3) fail("holdout", `se piden 3 instrucciones escondidas y hay ${traps}`);
+  if (large < 3) fail("holdout", `se piden 3 correos inocuos de más de 100 destinatarios y hay ${large}`);
 }
 
 function count(values: string[]): Record<string, number> {

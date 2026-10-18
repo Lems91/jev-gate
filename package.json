@@ -10,10 +10,13 @@
     "jev:ping": "tsx --env-file=.env.local scripts/jev-ping.ts",
     "typecheck": "tsc --noEmit",
     "fixtures:check": "tsx scripts/validate-fixtures.ts",
+    "fixtures:check:holdout": "tsx scripts/validate-fixtures.ts --set=holdout",
     "typegen": "next typegen",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "eval": "tsx --env-file-if-exists=.env.local scripts/eval.ts",
+    "eval:holdout:record": "tsx --env-file-if-exists=.env.local scripts/eval.ts --mode=record --set=holdout",
+    "eval:holdout": "tsx --env-file-if-exists=.env.local scripts/eval.ts --set=holdout",
     "eval:record": "tsx --env-file-if-exists=.env.local scripts/eval.ts --mode=record",
     "verify": "npm run typegen && npm run typecheck && npm run test && npm run eval && npm run build"
   },

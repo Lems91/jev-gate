@@ -38,3 +38,13 @@ test("el servidor rechaza un texto de más de 600 caracteres sin llamar a JEV", 
   expect(response.status()).toBe(400);
   expect((await response.json()).error).toContain("600");
 });
+
+test("la ruta rechaza cuerpos enormes o sin JSON, y la página trae cabeceras de seguridad", async ({ request }) => {
+  const big = await request.post("/api/evaluate", { data: { text: "a".repeat(10_000) } });
+  expect(big.status()).toBe(413);
+  const noJson = await request.post("/api/evaluate", { data: "hola", headers: { "Content-Type": "text/plain" } });
+  expect(noJson.status()).toBe(415);
+  const page = await request.get("/");
+  expect(page.headers()["x-content-type-options"]).toBe("nosniff");
+  expect(page.headers()["x-frame-options"]).toBe("DENY");
+});

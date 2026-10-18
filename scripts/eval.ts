@@ -6,7 +6,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { EVAL_TARGETS, JEV_MODEL, JEV_PRICE_USD_PER_MILLION_INPUT_TOKENS, MAX_PARALLEL_CALLS, THRESHOLDS } from "../src/engine/config";
-import { LabeledActionsSchema, type Action, type JevMode } from "../src/contracts/schemas";
+import { HoldoutActionsSchema, LabeledActionsSchema, type Action, type JevMode } from "../src/contracts/schemas";
 import { decideMany } from "../src/engine/gate";
 import { createJevClient, modeFromEnv } from "../src/engine/jev-client";
 import { computeMetrics, projectDailyCost, type EvalMetrics, type EvalRow } from "../src/engine/metrics";
@@ -125,13 +125,15 @@ function renderMarkdown(mode: JevMode, metrics: EvalMetrics, rows: EvalRow[], er
 
 async function main(): Promise<void> {
   const mode = parseMode();
+  // El set nuevo solo informa: no es una compuerta ni se usa para ajustar umbrales.
+  const holdout = process.argv.includes("--set=holdout");
   if (mode !== "replay" && !process.env.AI_GATEWAY_API_KEY) {
     console.error("Falta AI_GATEWAY_API_KEY en .env.local (los modos live y record llaman a JEV).");
     process.exit(1);
   }
 
-  const raw = JSON.parse(readFileSync(join(process.cwd(), "fixtures", "actions.json"), "utf8"));
-  const labeled = LabeledActionsSchema.parse(raw);
+  const raw = JSON.parse(readFileSync(join(process.cwd(), "fixtures", holdout ? "holdout.json" : "actions.json"), "utf8"));
+  const labeled = holdout ? HoldoutActionsSchema.parse(raw) : LabeledActionsSchema.parse(raw);
 
   const errors: string[] = [];
   const client = createJevClient({ mode });
@@ -146,14 +148,18 @@ async function main(): Promise<void> {
   const rows: EvalRow[] = labeled.map((item, index) => ({ labeled: item, decision: decisions[index] }));
   const metrics = computeMetrics(rows);
 
-  const markdown = renderMarkdown(mode, metrics, rows, errors);
+  const rendered = renderMarkdown(mode, metrics, rows, errors);
+  const markdown = holdout ? rendered.replace("# Informe del eval — modo", "# Informe del eval del set nuevo (no usado para calibrar) — modo") : rendered;
   const reportsDir = join(process.cwd(), "reports");
   mkdirSync(reportsDir, { recursive: true });
   // Replay es reproducible: un solo informe "latest". Las corridas con JEV real se conservan con fecha.
   const stamp = mode === "replay" ? "latest" : new Date().toISOString().replace(/[:.]/g, "-");
-  const base = join(reportsDir, `eval-${mode}-${stamp}`);
+  const base = join(reportsDir, `eval-${holdout ? "holdout-" : ""}${mode}-${stamp}`);
   writeFileSync(`${base}.md`, markdown, "utf8");
-  writeFileSync(`${base}.json`, `${JSON.stringify({ mode, model: JEV_MODEL, thresholds: THRESHOLDS, metrics, errors, decisions }, null, 2)}\n`, "utf8");
+  const json = `${JSON.stringify({ set: holdout ? "holdout" : "development", mode, model: JEV_MODEL, thresholds: THRESHOLDS, metrics, errors, decisions }, null, 2)}\n`;
+  writeFileSync(`${base}.json`, json, "utf8");
+  // La pantalla lee la última medición del set nuevo hecha con JEV real (record o live), no una repetición en replay.
+  if (holdout && mode !== "replay") writeFileSync(join(reportsDir, "holdout-latest.json"), json, "utf8");
 
   console.log(
     [
@@ -173,7 +179,7 @@ async function main(): Promise<void> {
     for (const error of errors) console.error(`  - ${error}`);
     process.exit(1);
   }
-  if (!metrics.passed) {
+  if (!metrics.passed && !holdout) {
     console.error("\nEl eval NO cumple los umbrales del PRD. Revisa las discrepancias en el informe; no se tocan etiquetas ni verificador.");
     process.exit(1);
   }

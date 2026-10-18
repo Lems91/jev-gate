@@ -1,4 +1,5 @@
 {
+  "set": "development",
   "mode": "replay",
   "model": "typesafe-ai/jev",
   "thresholds": {
@@ -39,16 +40,16 @@
     "jevCalls": 37,
     "codeOnlyDecisions": 11,
     "latencyAllMs": {
-      "p50": 196.89189999999985,
-      "p95": 809.4397999999999,
-      "mean": 223.32790208333336,
-      "max": 840.0730000000003
+      "p50": 196.64869999999974,
+      "p95": 812.3539999999998,
+      "mean": 223.9799833333333,
+      "max": 845.4045000000001
     },
     "latencyJevMs": {
-      "p50": 211.63430000000017,
-      "p95": 833.3316,
-      "mean": 289.65066486486484,
-      "max": 840.0730000000003
+      "p50": 211.50909999999976,
+      "p95": 836.4427000000001,
+      "mean": 290.4988405405404,
+      "max": 845.4045000000001
     },
     "inputTokensTotal": 36047,
     "inputTokensPerJevCall": 974.2432432432432,
@@ -126,7 +127,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 840.0730000000003,
+      "latencyMs": 845.4045000000001,
       "inputTokens": 1025,
       "costUsd": 0.00004305
     },
@@ -192,7 +193,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 833.3316,
+      "latencyMs": 836.4427000000001,
       "inputTokens": 1027,
       "costUsd": 0.000043134
     },
@@ -219,7 +220,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.641399999999976,
+      "latencyMs": 1.4424999999998818,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -275,7 +276,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 809.4397999999999,
+      "latencyMs": 812.3539999999998,
       "inputTokens": 784,
       "costUsd": 0.00003292800000000001
     },
@@ -330,7 +331,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 760.1313,
+      "latencyMs": 762.616,
       "inputTokens": 995,
       "costUsd": 0.00004179
     },
@@ -357,7 +358,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.09510000000000218,
+      "latencyMs": 0.16170000000010987,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -412,7 +413,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 236.07719999999995,
+      "latencyMs": 237.07640000000015,
       "inputTokens": 998,
       "costUsd": 0.000041916
     },
@@ -482,7 +483,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 237.00739999999996,
+      "latencyMs": 237.28510000000006,
       "inputTokens": 1013,
       "costUsd": 0.000042546
     },
@@ -537,7 +538,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 192.92219999999998,
+      "latencyMs": 193.29370000000017,
       "inputTokens": 994,
       "costUsd": 0.00004174800000000001
     },
@@ -603,7 +604,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 345.6129000000001,
+      "latencyMs": 346.78560000000016,
       "inputTokens": 1019,
       "costUsd": 0.000042798
     },
@@ -658,7 +659,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 396.45090000000005,
+      "latencyMs": 401.1814999999999,
       "inputTokens": 996,
       "costUsd": 0.000041832
     },
@@ -685,7 +686,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.22879999999986467,
+      "latencyMs": 0.23530000000005202,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -741,7 +742,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 189.9456,
+      "latencyMs": 194.32979999999998,
       "inputTokens": 788,
       "costUsd": 0.000033096
     },
@@ -811,7 +812,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 217.63909999999987,
+      "latencyMs": 218.85220000000004,
       "inputTokens": 1017,
       "costUsd": 0.000042714000000000005
     },
@@ -838,7 +839,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.08849999999983993,
+      "latencyMs": 0.09410000000002583,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -893,7 +894,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 193.3581999999999,
+      "latencyMs": 193.4843999999996,
       "inputTokens": 1004,
       "costUsd": 0.000042168
     },
@@ -952,7 +953,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 212.4411,
+      "latencyMs": 211.50909999999976,
       "inputTokens": 1005,
       "costUsd": 0.000042210000000000004
     },
@@ -979,7 +980,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 1.1334999999999127,
+      "latencyMs": 0.10459999999989122,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -1045,7 +1046,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 255.41959999999995,
+      "latencyMs": 255.70619999999985,
       "inputTokens": 1008,
       "costUsd": 0.000042336
     },
@@ -1104,7 +1105,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 190.67149999999992,
+      "latencyMs": 190.9768999999999,
       "inputTokens": 991,
       "costUsd": 0.000041622
     },
@@ -1174,7 +1175,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 176.91920000000005,
+      "latencyMs": 176.60900000000015,
       "inputTokens": 1014,
       "costUsd": 0.000042588
     },
@@ -1235,7 +1236,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 211.63430000000017,
+      "latencyMs": 211.89190000000008,
       "inputTokens": 962,
       "costUsd": 0.000040404
     },
@@ -1295,7 +1296,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 194.45979999999986,
+      "latencyMs": 194.7398999999998,
       "inputTokens": 794,
       "costUsd": 0.000033348
     },
@@ -1322,7 +1323,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.06729999999993197,
+      "latencyMs": 0.09410000000002583,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -1377,7 +1378,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 191.95029999999997,
+      "latencyMs": 191.14350000000013,
       "inputTokens": 997,
       "costUsd": 0.000041874
     },
@@ -1433,7 +1434,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 326.5518000000002,
+      "latencyMs": 326.0639000000001,
       "inputTokens": 773,
       "costUsd": 0.000032466000000000004
     },
@@ -1460,7 +1461,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.10789999999997235,
+      "latencyMs": 0.11210000000005493,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -1526,7 +1527,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 270.41589999999974,
+      "latencyMs": 270.0514999999998,
       "inputTokens": 1014,
       "costUsd": 0.000042588
     },
@@ -1581,7 +1582,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 355.55989999999997,
+      "latencyMs": 353.308,
       "inputTokens": 989,
       "costUsd": 0.000041538
     },
@@ -1608,7 +1609,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.08670000000006439,
+      "latencyMs": 0.08169999999995525,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -1674,7 +1675,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 206.9849999999999,
+      "latencyMs": 205.8137999999999,
       "inputTokens": 1019,
       "costUsd": 0.000042798
     },
@@ -1744,7 +1745,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 233.2437,
+      "latencyMs": 232.6687999999997,
       "inputTokens": 1014,
       "costUsd": 0.000042588
     },
@@ -1771,7 +1772,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.06779999999980646,
+      "latencyMs": 0.08129999999982829,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -1827,7 +1828,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 181.37409999999977,
+      "latencyMs": 181.12259999999992,
       "inputTokens": 783,
       "costUsd": 0.000032886
     },
@@ -1893,7 +1894,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 207.84399999999982,
+      "latencyMs": 209.93550000000005,
       "inputTokens": 1005,
       "costUsd": 0.000042210000000000004
     },
@@ -1948,7 +1949,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 212.49540000000025,
+      "latencyMs": 214.90740000000005,
       "inputTokens": 988,
       "costUsd": 0.000041496000000000004
     },
@@ -2009,7 +2010,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 168.4951999999996,
+      "latencyMs": 170.19619999999964,
       "inputTokens": 968,
       "costUsd": 0.000040656000000000005
     },
@@ -2065,7 +2066,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 262.3352,
+      "latencyMs": 263.2083,
       "inputTokens": 774,
       "costUsd": 0.000032508
     },
@@ -2092,7 +2093,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.1009999999998854,
+      "latencyMs": 0.12740000000007967,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -2147,7 +2148,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 196.89189999999985,
+      "latencyMs": 196.64869999999974,
       "inputTokens": 997,
       "costUsd": 0.000041874
     },
@@ -2202,7 +2203,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 197.51729999999975,
+      "latencyMs": 195.5728999999999,
       "inputTokens": 1002,
       "costUsd": 0.000042084000000000006
     },
@@ -2229,7 +2230,7 @@
       ],
       "answers": [],
       "mode": "replay",
-      "latencyMs": 0.04670000000010077,
+      "latencyMs": 0.04729999999995016,
       "inputTokens": 0,
       "costUsd": 0
     },
@@ -2289,7 +2290,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 185.5981999999999,
+      "latencyMs": 184.34580000000005,
       "inputTokens": 1158,
       "costUsd": 0.000048636
     },
@@ -2344,7 +2345,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 230.60450000000037,
+      "latencyMs": 231.49560000000042,
       "inputTokens": 989,
       "costUsd": 0.000041538
     },
@@ -2405,7 +2406,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 196.19339999999966,
+      "latencyMs": 197.5723999999998,
       "inputTokens": 955,
       "costUsd": 0.00004011
     },
@@ -2471,7 +2472,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 192.25119999999993,
+      "latencyMs": 193.89550000000008,
       "inputTokens": 1007,
       "costUsd": 0.000042294000000000005
     },
@@ -2537,7 +2538,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 197.29729999999995,
+      "latencyMs": 199.03889999999978,
       "inputTokens": 1004,
       "costUsd": 0.000042168
     },
@@ -2597,7 +2598,7 @@
         }
       ],
       "mode": "replay",
-      "latencyMs": 209.9355999999998,
+      "latencyMs": 210.92889999999989,
       "inputTokens": 1177,
       "costUsd": 0.000049434
     }

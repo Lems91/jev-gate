@@ -27,4 +27,11 @@ describe("LiveLimiter", () => {
     expect(limiter.tryAcquire("c", 2)).toMatchObject({ allowed: false, scope: "global" });
     expect(limiter.tryAcquire("c", 24 * HOUR).allowed).toBe(true);
   });
+
+  it("sigue funcionando con miles de IP distintas (olvida las vencidas)", () => {
+    const limiter = new LiveLimiter({ perIpPerHour: 1, globalPerDay: 100_000 });
+    for (let i = 0; i < 5200; i += 1) limiter.tryAcquire(`ip-${i}`, 0);
+    expect(limiter.tryAcquire("ip-nueva", 2 * HOUR).allowed).toBe(true);
+    expect(limiter.tryAcquire("ip-0", 2 * HOUR + 1).allowed).toBe(true);
+  });
 });
