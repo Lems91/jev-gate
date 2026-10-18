@@ -9,7 +9,12 @@
     "lint": "eslint",
     "jev:ping": "tsx --env-file=.env.local scripts/jev-ping.ts",
     "typecheck": "tsc --noEmit",
-    "fixtures:check": "tsx scripts/validate-fixtures.ts"
+    "fixtures:check": "tsx scripts/validate-fixtures.ts",
+    "typegen": "next typegen",
+    "test": "vitest run",
+    "eval": "tsx --env-file-if-exists=.env.local scripts/eval.ts",
+    "eval:record": "tsx --env-file-if-exists=.env.local scripts/eval.ts --mode=record",
+    "verify": "npm run typegen && npm run typecheck && npm run test && npm run eval && npm run build"
   },
   "dependencies": {
     "ai": "^7.0.143",
@@ -19,12 +24,13 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.5"
   }
 }

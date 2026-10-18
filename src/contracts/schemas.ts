@@ -92,6 +92,8 @@ export const REASON_CODES = [
   "action_kind_other",
   "high_risk",
   "ambiguous_offer",
+  // JEV no respondió (o no hay grabación en modo replay): el portero nunca deja pasar por falta de respuesta.
+  "jev_unavailable",
 ] as const;
 export const ReasonCodeSchema = z.enum(REASON_CODES);
 export type ReasonCode = z.infer<typeof ReasonCodeSchema>;
@@ -109,27 +111,26 @@ export const QUESTION_IDS = [
 export const QuestionIdSchema = z.enum(QUESTION_IDS);
 export type QuestionId = z.infer<typeof QuestionIdSchema>;
 
-// Una propiedad por pregunta. Las instrucciones van en inglés; el texto de terceros va como evidencia.
+// Una propiedad por pregunta. Las instrucciones van en inglés; el texto de terceros viaja en el estado
+// compartido de la llamada (JevRequest) como evidencia, nunca dentro de las instrucciones.
 const BooleanQuestionSchema = z.object({
   id: QuestionIdSchema,
   kind: z.literal("boolean"),
   instructions: z.string().min(1),
-  evidence: z.string().min(1),
 });
 
 const ChoiceQuestionSchema = z.object({
   id: QuestionIdSchema,
   kind: z.literal("choice"),
   instructions: z.string().min(1),
-  evidence: z.string().min(1),
-  options: z
-    .array(z.string().min(1))
-    .min(2)
-    .refine((options) => options.includes("other"), {
-      message: 'Toda pregunta Choice debe incluir la opción "other"',
+  // Opción -> descripción (en inglés). Toda pregunta Choice incluye "other" y un camino hacia una persona.
+  criteria: z
+    .record(z.string().min(1), z.string().min(1))
+    .refine((criteria) => Object.keys(criteria).length >= 2, {
+      message: "Una pregunta Choice necesita al menos dos opciones",
     })
-    .refine((options) => new Set(options).size === options.length, {
-      message: "Las opciones no pueden repetirse",
+    .refine((criteria) => "other" in criteria, {
+      message: 'Toda pregunta Choice debe incluir la opción "other"',
     }),
 });
 
@@ -139,23 +140,27 @@ export const JevQuestionSchema = z.discriminatedUnion("kind", [
 ]);
 export type JevQuestion = z.infer<typeof JevQuestionSchema>;
 
-const AnswerMeta = {
-  questionId: QuestionIdSchema,
-  latencyMs: z.number().nonnegative(),
-  inputTokens: z.number().int().nonnegative(),
-};
+// Una sola llamada a JEV por acción: un estado compartido y todas las preguntas que le aplican.
+export const JevRequestSchema = z.object({
+  actionId: z.string().regex(/^A-\d{3}$/),
+  state: z.record(z.string(), z.json()),
+  questions: z.array(JevQuestionSchema).min(1),
+});
+export type JevRequest = z.infer<typeof JevRequestSchema>;
 
+// La latencia y los tokens son de la llamada completa (están en Decision), no de cada pregunta.
 export const JevAnswerSchema = z.discriminatedUnion("kind", [
   z.object({
-    ...AnswerMeta,
+    questionId: QuestionIdSchema,
     kind: z.literal("boolean"),
     probability: z.number().min(0).max(1),
   }),
   z.object({
-    ...AnswerMeta,
+    questionId: QuestionIdSchema,
     kind: z.literal("choice"),
     choice: z.string().min(1),
-    probabilities: z.record(z.string(), z.number().min(0).max(1)),
+    // El proveedor puede omitirla; sin distribución el código trata la respuesta como de baja confianza.
+    probabilities: z.record(z.string(), z.number().min(0).max(1)).optional(),
   }),
 ]);
 export type JevAnswer = z.infer<typeof JevAnswerSchema>;

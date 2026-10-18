@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "model": "typesafe-ai/jev",
+  "actionId": "A-026",
+  "requestHash": "0cc2c22c030ee57a",
+  "latencyMs": 321.89710000000014,
+  "inputTokens": 773,
+  "answers": [
+    {
+      "questionId": "off_brand_tone",
+      "kind": "boolean",
+      "probability": 0.03
+    },
+    {
+      "questionId": "action_kind",
+      "kind": "choice",
+      "choice": "crm_update",
+      "probabilities": {
+        "mass_email": 0,
+        "crm_update": 1,
+        "publish_content": 0,
+        "other": 0
+      }
+    },
+    {
+      "questionId": "risk_level",
+      "kind": "choice",
+      "choice": "medium",
+      "probabilities": {
+        "low": 0.21,
+        "medium": 0.52,
+        "high": 0.2,
+        "critical": 0,
+        "other": 0.07
+      }
+    }
+  ]
+}

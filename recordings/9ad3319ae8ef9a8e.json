@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "model": "typesafe-ai/jev",
+  "actionId": "A-009",
+  "requestHash": "9ad3319ae8ef9a8e",
+  "latencyMs": 188.09940000000006,
+  "inputTokens": 994,
+  "answers": [
+    {
+      "questionId": "unsupported_offer",
+      "kind": "boolean",
+      "probability": 0.95
+    },
+    {
+      "questionId": "audience_mismatch",
+      "kind": "boolean",
+      "probability": 0.13
+    },
+    {
+      "questionId": "off_brand_tone",
+      "kind": "boolean",
+      "probability": 0.07
+    },
+    {
+      "questionId": "action_kind",
+      "kind": "choice",
+      "choice": "publish_content",
+      "probabilities": {
+        "mass_email": 0,
+        "crm_update": 0,
+        "publish_content": 1,
+        "other": 0
+      }
+    },
+    {
+      "questionId": "risk_level",
+      "kind": "choice",
+      "choice": "medium",
+      "probabilities": {
+        "low": 0.41,
+        "medium": 0.39999999999999997,
+        "high": 0.16,
+        "critical": 0.02,
+        "other": 0.01
+      }
+    }
+  ]
+}

@@ -34,6 +34,8 @@ Hackathon 30X (16–18 oct 2026), reto JEV, área Tech. Proyecto: JEV Gate, un p
 - Tres veredictos: PASA, FRENA, ESCALA. Nada de la acción se ejecuta de verdad.
 - Si el acceso a JEV falla en la Compuerta G0, se cambia de reto y se reutiliza el motor de políticas.
 
+- Los umbrales de la política se calibraron sobre el set de desarrollo de 48 acciones (Etapa 2). En la Etapa 4 se mide contra un set nuevo no usado para calibrar; solo esa medición se presenta como resultado de generalización.
+
 ## Protección de datos y ética de uso
 - Solo datos simulados; ninguna persona real. Los nombres y correos de los fixtures son ficticios.
 - El portero nunca ejecuta acciones; solo decide y registra.
