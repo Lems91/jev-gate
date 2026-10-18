@@ -16,8 +16,8 @@ export function ReviewPanel({ entries, onResolve, onExport }: Props) {
   const newestFirst = [...entries].reverse();
 
   return (
-    <section aria-labelledby="review-title" className="panel">
-      <h2 id="review-title">Revisión humana</h2>
+    <section aria-labelledby="review-title" className="panel section-panel">
+      <h2 id="review-title" className="section-title">Cola de revisión y auditoría</h2>
       <p className="hint">Las acciones que el portero escala esperan aquí. Aprobar o rechazar solo deja constancia: nada se ejecuta.</p>
 
       <label htmlFor="review-note" className="field-label">

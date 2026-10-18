@@ -44,8 +44,8 @@ export function TryAction({ onResult }: Props) {
   }
 
   return (
-    <section aria-labelledby="try-title" className="panel">
-      <h2 id="try-title">Prueba tu acción</h2>
+    <section aria-labelledby="try-title" className="panel section-panel">
+      <h2 id="try-title" className="section-title">Prueba tu acción en vivo</h2>
       <p className="hint">Se evalúa en vivo con JEV desde el servidor. Nada se ejecuta de verdad. Máximo {MAX_CUSTOM_TEXT_CHARS} caracteres y {LIVE_LIMITS.perIpPerHour} evaluaciones en vivo por hora.</p>
       <form onSubmit={submit} className="form">
         <label htmlFor="try-type" className="field-label">

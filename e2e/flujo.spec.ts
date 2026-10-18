@@ -3,7 +3,11 @@ import { expect, test } from "@playwright/test";
 test("proponer, escalar, aprobar y ver el registro", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "JEV Gate" })).toBeVisible();
+  // "Resultados" es un acordeón cerrado por defecto; se abre con el teclado o el clic.
+  await expect(page.getByText("Calibrado sobre el set de desarrollo de 48 acciones")).toBeHidden();
+  await page.getByText("Resultados", { exact: true }).click();
   await expect(page.getByText("Calibrado sobre el set de desarrollo de 48 acciones")).toBeVisible();
+  await expect(page.getByText("Set nuevo (no usado para calibrar)").first()).toBeVisible();
 
   // Una acción que el portero escala (A-002) se busca y se abre.
   await page.getByLabel("Buscar por id, tipo, agente o texto").fill("A-002");

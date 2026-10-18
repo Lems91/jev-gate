@@ -60,3 +60,10 @@ export const CHECK_LABEL = {
 
 // "2026-10-18T10:00:00-05:00" -> "2026-10-18 10:00"
 export const shortDateTime = (iso: string) => iso.slice(0, 16).replace("T", " ");
+
+// Símbolo junto a la palabra: el veredicto no depende solo del color.
+export const VERDICT_GLYPH: Record<Verdict, string> = {
+  PASA: "✓",
+  ESCALA: "▲",
+  FRENA: "✕",
+};

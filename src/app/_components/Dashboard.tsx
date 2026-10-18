@@ -5,6 +5,9 @@ import type { AuditEntry } from "@/contracts/schemas";
 import { createAuditEntry, resolveAuditEntry } from "@/engine/audit";
 import type { DashboardData } from "@/server/dashboard-data";
 import { ActionList } from "./ActionList";
+import { HowItWorks } from "./HowItWorks";
+import { Hero } from "./Hero";
+import { Scenarios } from "./Scenarios";
 import { DecisionCard } from "./DecisionCard";
 import { MetricsBar } from "./MetricsBar";
 import { ReviewPanel } from "./ReviewPanel";
@@ -64,40 +67,61 @@ export function Dashboard({ data }: { data: DashboardData }) {
 
   return (
     <>
-      <header className="top">
-        <h1>JEV Gate</h1>
-        <p className="tagline">Un portero que decide PASA, FRENA o ESCALA para las acciones de agentes internos. Nada se ejecuta de verdad: solo decide y deja registro.</p>
-      </header>
-      <MetricsBar data={data} />
-      <div className="layout">
-        <div className="column">
-          <ActionList actions={data.actions} featured={data.featured} selectedKey={selectedKey} onSelect={showDecision} />
-          {liveProposals.length > 0 && (
-            <section aria-labelledby="mine-title" className="panel">
-              <h2 id="mine-title">Tus pruebas en vivo</h2>
-              <ul className="action-list">
-                {liveProposals.map((proposal) => (
-                  <li key={proposal.key}>
-                    <button type="button" className="action-button" aria-pressed={selectedKey === proposal.key} onClick={() => showDecision(proposal.key)}>
-                      <span className="action-id">
-                        {proposal.decision.verdict} · {proposal.action.id}
-                      </span>
-                      <span className="action-summary">{proposal.action.summary}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+      <Hero />
+
+      <section aria-labelledby="demo-title" className="section">
+        <h2 id="demo-title" className="section-title">
+          Demo en 4 escenarios
+        </h2>
+        <p className="section-lead">Elige un escenario para ver cómo decide el portero: primero el código, después JEV, al final el veredicto y su motivo.</p>
+        <Scenarios featured={data.featured} actions={data.actions} decisions={data.decisions} selectedKey={selectedKey} onSelect={showDecision} />
+        <div className="demo-grid">
+          <div ref={decisionRef} className="demo-main">
+            <DecisionCard proposal={selected} registered={selected ? registeredKeys.has(selected.key) : false} onPropose={register} />
+          </div>
+          <ActionList actions={data.actions} selectedKey={selectedKey} onSelect={showDecision} />
         </div>
-        <div className="column" ref={decisionRef}>
-          <DecisionCard proposal={selected} registered={selected ? registeredKeys.has(selected.key) : false} onPropose={register} />
-          <TryAction onResult={onLiveResult} />
-        </div>
-        <div className="column">
-          <ReviewPanel entries={entries} onResolve={onResolve} onExport={onExport} />
-        </div>
+      </section>
+
+      <div className="section two-col">
+        <TryAction onResult={onLiveResult} />
+        {liveProposals.length > 0 && (
+          <section aria-labelledby="mine-title" className="panel section-panel">
+            <h3 id="mine-title" className="panel-title">
+              Tus pruebas en vivo
+            </h3>
+            <ul className="action-list">
+              {liveProposals.map((proposal) => (
+                <li key={proposal.key}>
+                  <button type="button" className="action-button" aria-pressed={selectedKey === proposal.key} onClick={() => showDecision(proposal.key)}>
+                    <span className="action-id">
+                      {proposal.decision.verdict} · {proposal.action.id}
+                    </span>
+                    <span className="action-summary">{proposal.action.summary}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
+
+      <div className="section">
+        <ReviewPanel entries={entries} onResolve={onResolve} onExport={onExport} />
+      </div>
+
+      <div className="section accordions">
+        <details className="accordion">
+          <summary>Resultados</summary>
+          <MetricsBar data={data} />
+        </details>
+        <details className="accordion">
+          <summary>Cómo funciona</summary>
+          <HowItWorks />
+        </details>
+      </div>
+
+      <footer className="footer">JEV Gate · prototipo con datos sintéticos · solo decide y registra, nunca ejecuta</footer>
     </>
   );
 }
