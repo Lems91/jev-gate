@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "jev:ping": "tsx --env-file=.env.local scripts/jev-ping.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "fixtures:check": "tsx scripts/validate-fixtures.ts"
   },
   "dependencies": {
     "ai": "^7.0.143",
