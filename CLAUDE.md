@@ -61,3 +61,11 @@ Después del checkpoint, espera la palabra "aprobado" de Luis antes de pasar a l
 - Variables y funciones en inglés; comentarios en español.
 - Commits pequeños por etapa: `etapa-N: descripción`.
 - Cada cambio de código se explica en 1–2 líneas y cómo probarlo.
+
+## Datos verificados de JEV (Etapa 0, docs oficiales de Vercel y TypeSafe)
+- Modelo en el Gateway: `typesafe-ai/jev` (no hay ID con versión en el Gateway; `jev-latest` y `jev-1.x` son de la API directa de TypeSafe).
+- AI SDK: `experimental_decide` de `ai` (≥ 7.0.128). `experimental_evaluate` es solo un alias obsoleto.
+- Tipo de pregunta: en el Gateway la pregunta sí/no es `boolean` (devuelve `probability`); `noul` solo existe en la API directa de TypeSafe. Choice devuelve `choice` + `probabilities`.
+- Clave local: `AI_GATEWAY_API_KEY` en `.env.local`. `vercel link` añade `VERCEL_OIDC_TOKEN` (caduca en 12 h); ninguna se sube al repo ni al despliegue (`.gitignore` + `.vercelignore`).
+- Precio: $0.042 por 1M tokens de entrada, sin cargo de salida; contexto 32 000 tokens. Requiere créditos pagados en Vercel (el nivel gratis devuelve "Free tier users do not have access to this model").
+- `npm run verify` (Etapa 2): correr `next typegen` antes de `tsc --noEmit`, porque `LayoutProps` se genera con Next.
