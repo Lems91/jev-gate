@@ -18,7 +18,8 @@
     "eval:holdout:record": "tsx --env-file-if-exists=.env.local scripts/eval.ts --mode=record --set=holdout",
     "eval:holdout": "tsx --env-file-if-exists=.env.local scripts/eval.ts --set=holdout",
     "eval:record": "tsx --env-file-if-exists=.env.local scripts/eval.ts --mode=record",
-    "verify": "npm run typegen && npm run typecheck && npm run test && npm run eval && npm run build"
+    "check:deployed": "tsx scripts/check-deployed.ts",
+    "verify": "npm run typegen && npm run typecheck && npm run test && npm run eval && npm run build && npm run check:deployed"
   },
   "dependencies": {
     "ai": "^7.0.143",
